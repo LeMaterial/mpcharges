@@ -2,8 +2,10 @@ import json
 import os
 import subprocess
 import sys
+from glob import glob
 from shutil import copyfile
 
+import pandas as pd
 from monty.tempfile import ScratchDir
 from pymatgen.command_line.bader_caller import BaderAnalysis
 from pymatgen.io.vasp.outputs import Chgcar
@@ -70,3 +72,34 @@ def get_bader_data(
             os.path.join(result_path, "{}_result.json".format(filename)), "w"
         ) as fp:
             json.dump(ba.summary, fp)
+
+
+def process_results_folder(result_path):
+    """
+    Takes all files processed using get_bader_data and creates
+      final CSV with all summary information per task_id.
+
+    Args:
+        result_path (str): path of folder with files
+            that have been processed with get_bader_data
+    """
+    result_files = glob(os.path.join(result_path, "*.json"))
+
+    data = {
+        "task_id": [],
+        "charge": [],
+        "min_dist": [],
+        "atomic_volume": [],
+        "vacuum_charge": [],
+        "vacuum_volume": [],
+        "reference_used": [],
+        "bader_version": [],
+    }
+
+    for file in result_files:
+        d = json.load(open(file))
+        for key, value in d.items():
+            data[key].append(value)
+        data["task_id"].append(os.path.basename(file).replace("_result.json", ""))
+
+    pd.DataFrame(data).to_csv(os.path.join(result_path, "summary.csv"))
