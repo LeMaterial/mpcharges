@@ -1,0 +1,17 @@
+[project]
+name = "mpcharges"
+version = "0.1.0"
+description = "Bader charge calculation library from raw VASP data from Materials Project"
+readme = "README.md"
+authors = [
+    { name = "martinsiron", email = "martin.siron@entalpic.ai" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pymatgen>=2024.11.13",
+    "ruff>=0.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
