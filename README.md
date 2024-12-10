@@ -1,3 +1,6 @@
+# Work in progress
+Stay tuned. We are actively working on this script to add charges to our HF dataset. We still need to ensure to permutations are applied between the atom positions and the charges. Charges will be released soon.
+
 # MPCharges
 Script used to calculate charges based on all available raw VASP files in Materials Project AWS OpenData initiatives.
 
